@@ -9,8 +9,7 @@ library("dplyr")
 #devtools::install_github("kassambara/factoextra")
 library("factoextra")
 library("reshape2")
-if(!require(readxl)){install.packages("readxl")}
-library("readxl")
+
 # Importing the dataset
 
 songs <- read.csv("SpotifyData.csv")
@@ -242,33 +241,3 @@ songs <- songs %>% select(-c("song_title", "artist"))
 # final dataset for model building
 
 head(songs) #sample of data
-
-#If your target variable has continuous values ranging from 0 to 1 (float numbers), then logistic regression is not appropriate since logistic regression 
-#is designed for binary classification with a binary (0/1) target variable.
-#Instead, for a regression problem with continuous target values between 0 and 1, you should use regression algorithms. Linear regression is one of the most
-#common approaches for this type of problem.
-model <- lm(target ~ acousticness + danceability + duration_min + energy + instrumentalness + key + liveness, data = songs)
-
-# Summarize the results
-summary(model)
-
-
-# Divide it into train and test and apply regression on it
-set.seed(42)  # For reproducibility
-train_indices <- sample(1:nrow(songs), 0.8 * nrow(songs))  # 80% for training
-train_data <- songs[train_indices, ]
-test_data <- songs[-train_indices, ]
-
-regressionModel <- lm(target ~ acousticness + danceability + duration_min + energy + instrumentalness + key + liveness + mode + speechiness + tempo +  valence, data = train_data)
-
-# Make predictions on the test data
-predictions <- predict(regressionModel, newdata = test_data)
-predictions
-
-# Calculate the mean squared error (MSE) to evaluate the model's performance
-mse <- mean((predictions - test_data$target)^2)
-cat("Mean Squared Error:", mse, "\n")
-
-# Calculate the Mean Absolute Error (MAE)
-mae <- mean(abs(predictions - test_data$target))
-cat("Mean Absolute Error (MAE):", mae, "\n")
