@@ -17,7 +17,7 @@ library('MASS')
 
 # Importing the dataset
 
-songs <- read.csv("C:/Users/dwara/OneDrive/Documents/Data Analytics/Assignment-3/Spotify Data.csv")
+songs <- read.csv("SpotifyData.csv")
 
 dim(songs)
 
